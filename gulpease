@@ -1,0 +1,67 @@
+#!/usr/bin/perl
+#
+# gulpease.pl
+# Calculate Gulpease index of given pdf for ScalateKids VM
+# Author: Andrea Giacomo Baldan
+# Version: 1.0
+
+use warnings;
+use strict;
+use open qw/:std :utf8/;
+
+my ($sentenceCount, $wordCount, $charCount, @pdf_files);
+sub print_gulpease {
+	my $gulpease = shift;
+	my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
+	if ($^O eq 'darwin') {
+		($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
+	}
+	if ($gulpease < 45) {
+		printf "$bold [*] Gulpease:$reset\t$green%.2f$reset\n", $gulpease;
+	} elsif($gulpease > 45 && $gulpease < 60) {
+		printf "$bold [*] Gulpease:$reset\t$yellow%.2f$reset\n", $gulpease;
+	} else {
+		printf "$bold [*] Gulpease:$reset\t$red%.2f$reset\n", $gulpease;
+	}
+}
+
+if(@ARGV == 0) {
+    # find all project files .pdf
+    @pdf_files = `find . -type f -name "*.pdf"`;
+} else {
+    (@pdf_files) = @ARGV;
+    # .pdf extension check on arguments
+    if(grep(/(?<!\.pdf)$/, @pdf_files)) {
+        print "Only .pdf files allowed\n";
+        exit 1;
+    }
+}
+foreach my $pdf(@pdf_files) {
+    chomp $pdf;
+    my $text = `pdftotext $pdf -`;
+    $sentenceCount = 0;
+    $wordCount = 0;
+    $charCount = 0;
+    ++$sentenceCount while $text =~ /["']?[A-Z][^.?!]+((?![.?!]['"]?\s["']?[A-Z][^.?!]).)+[.?!'"]+/g;
+    $text =~ s/[^\w\dèòàù\(\)\[\]\{\}]/ /g;
+    ++$wordCount while $text =~ /\S+/g;
+    $text =~ s/[[:punct:]][[:space:]]//g;
+    ++$charCount while $text =~ /[a-zA-Z0-9_àòèù\(\)\[\]\{\}]/g;
+    my $gulpease = 89 + (((300 * $sentenceCount) - (10 * $charCount)) / $wordCount);
+    print "\n";
+	if($^O eq 'darwin') {
+		print "\033[1m$pdf:\033[0m\n";
+		print "\n";
+		print "\033[1m [*] Sentences:\033[0m\t$sentenceCount\n";
+		print "\033[1m [*] Words:\033[0m\t$wordCount\n";
+		print "\033[1m [*] Characters:\033[0m$charCount\n";
+	} else {
+		print "\e[1m$pdf:\e[0m\n";
+		print "\n";
+		print "\e[1m [*] Sentences:\e[0m\t$sentenceCount\n";
+		print "\e[1m [*] Words:\e[0m\t$wordCount\n";
+		print "\e[1m [*] Characters:\e[0m$charCount\n";
+	}
+	print_gulpease($gulpease);
+}
+print "\n";

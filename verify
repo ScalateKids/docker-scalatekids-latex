@@ -1,0 +1,58 @@
+#!/bin/bash
+#
+# build
+# Bash script to verify latex files before compilation.
+# Author: Andrea Giacomo Baldan
+# Version: 1.0
+
+source /usr/bin/lib.sh
+
+function verify() {
+    regex="$1"
+    error="$2"
+    files=$(find . -type f -name '*.tex')
+
+    result=$(grep -w --color=always "$regex" $files)
+    status="$?"
+
+    if [ "$status" -gt 1 ]; then
+        set_bold; set_red; echo -ne "[!] Grep error, exit status"; reset_color; echo -ne " $status"; reset_text;
+        exit 2
+    fi
+
+    if [ "$status" == "0" ]; then
+        set_bold; set_red; echo -ne "[!] $error"; reset_text;
+        echo -e "$result"
+    fi
+}
+
+# underscore not escaped
+verify " [[:alpha:]]{2,}_" "Underscore not escaped, use \_"
+
+# grammar
+verify "E'" "Substitute E' with È (ascii code alt 212)"
+verify "[Pp]ò" "Substitute [Pp]ò with [Pp]o'"
+verify "[[:alpha:]]\`[aeou]" "Incorrect accents with one of àèòù"
+# english terms
+terms=('[Cc]ases' '[Ss]cripts' '[Rr]epositories' '[Dd]irectories' '[Ff]iles' '[Rr]oles' '[Pp]rojects' '[Ff]eatures' '[Tt]hreads' '[Uu]sers' '[Tt]emplates' '[Dd]ocuments' '[Aa]ctors')
+for term in $terms; do
+    verify $term "Plural english terms must be singular"
+done
+
+# special code
+verify "TODO" "Unresolved TODO"
+verify "^>>>>>>" "Unresolved merge"
+verify "^======" "Unresolved merge"
+verify "^<<<<<<" "Unresolved merge"
+
+# dates
+verify "[[:digit:]]{2}/[[:digit:]]{2}/[[:digit:]]{4}" "dd/mm/AAAA wrong format date, use AAAA-mm-dd"
+verify "[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{4}" "dd-mm-AAAA wrong format date, use AAAA-mm-dd"
+
+# tullio
+verify "[Ff]as[ei]" "'Fase' word to check, substitute possibly"
+verify "[Oo]bbiettiv[oi]" "Just one 'b' in word 'ob(b)iettivo'"
+verify "[Oo]bbietiv[oi]" "Just one 'b' and two 't' in word 'ob(b)iettivo'"
+verify "[Ff]ittizzi[aeo]*" "Just one 'z' in word 'fittiz(z)i*'"
+verify "[Ii]ndir[r][r]*e" "Just one 'r' in word 'indr(r)e'"
+
