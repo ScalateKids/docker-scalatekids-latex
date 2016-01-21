@@ -60,5 +60,5 @@ verify "[Ii]ndir[r][r]*e" "Just one 'r' in word 'indr(r)e'"
 input=$(cat /root/input/mispelled.txt)
 while read -r line
 do
-	verify $name "Mispell error"
+	verify $line "Mispell error"
 done < "$input"
