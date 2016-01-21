@@ -17,11 +17,11 @@ sub print_gulpease {
 		($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
 	}
 	if ($gulpease < 45) {
-		printf "$bold [*] Gulpease:$reset\t$green%.2f$reset\n", $gulpease;
+		printf "$bold [*] Gulpease:$reset\t$red%.2f$reset\n", $gulpease;
 	} elsif($gulpease > 45 && $gulpease < 60) {
 		printf "$bold [*] Gulpease:$reset\t$yellow%.2f$reset\n", $gulpease;
 	} else {
-		printf "$bold [*] Gulpease:$reset\t$red%.2f$reset\n", $gulpease;
+		printf "$bold [*] Gulpease:$reset\t$green%.2f$reset\n", $gulpease;
 	}
 }
 

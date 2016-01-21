@@ -25,6 +25,8 @@
 \usepackage{listings}
 \usepackage[table]{xcolor}
 \usepackage{longtable}
+\usepackage{appendix}
+\usepackage{parskip}
 \usepackage{changes}
 \usepackage{amsmath}
 \usepackage{graphicx}
@@ -82,6 +84,12 @@
 \newcommand{\glossDef}[1]{\textbf{#1:}}
 % Change name of Toc to 'Indice'
 \renewcommand{\contentsname}{Indice}
+% change name of appendix to Appendici
+\renewcommand{\appendixtocname}{Appendici}
+% change listoffigures to lista figure
+\renewcommand{\listfigurename}{Lista figure}
+% change listoftables to lista figure
+\renewcommand{\listtablename}{Lista tabelle}
 % image folders
 \graphicspath{{img/}{../../img/}}
 % newpage for every section
