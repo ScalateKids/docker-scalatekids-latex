@@ -1,5 +1,4 @@
 accere
-all
 anilisi
 allìapplicazione
 appresentazione
@@ -11,6 +10,7 @@ aministratore
 aplicazione
 applicazzione
 attivita
+aggionrato
 instestazione
 diagrammmi
 diagrami
@@ -27,6 +27,8 @@ nuovmanete
 oltra
 ontiene
 ontiene
+cntiene
+contene
 paramentri
 paramentro
 parametor
