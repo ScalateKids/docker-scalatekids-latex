@@ -85,7 +85,7 @@
 % Change name of Toc to 'Indice'
 \renewcommand{\contentsname}{Indice}
 % change name of appendix to Appendici
-\renewcommand{\appendixtocname}{Appendici}
+\renewcommand{\appendixtocname}{Appendice}
 % change listoffigures to lista figure
 \renewcommand{\listfigurename}{Lista figure}
 % change listoftables to lista figure
