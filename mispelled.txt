@@ -1,6 +1,6 @@
 accere
 all
-all'anilisi
+anilisi
 allìapplicazione
 appresentazione
 chiamarà
@@ -55,3 +55,14 @@ visualizzarà
 visaulizzerà
 visaulizzare
 visualizare
+efetturae
+effetturae
+efetuare
+effetuare
+efettuare
+crazione
+crazioni
+creazone
+rimozzione
+elencazzione
+elencazone
