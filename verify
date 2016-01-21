@@ -56,3 +56,9 @@ verify "[Oo]bbietiv[oi]" "Just one 'b' and two 't' in word 'ob(b)iettivo'"
 verify "[Ff]ittizzi[aeo]*" "Just one 'z' in word 'fittiz(z)i*'"
 verify "[Ii]ndir[r][r]*e" "Just one 'r' in word 'indr(r)e'"
 
+# read from file
+input=$(cat /root/input/mispelled.txt)
+while read -r line
+do
+	verify $name "Mispell error"
+done < "$input"

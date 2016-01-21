@@ -11,6 +11,9 @@ RUN [ "apt-get", "clean" ]
 
 COPY lib/lib.sh /usr/bin/lib.sh
 
+RUN mkdir /root/input
+COPY mispelled.txt /root/input/mispelled.txt
+
 COPY build /usr/bin/build
 RUN chmod +x /usr/bin/build
 
