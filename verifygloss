@@ -42,6 +42,7 @@ function verify_gloss() {
 
 		if [ "$status" == "0" ]; then
 			set_bold; set_red; echo -ne "[!] Missing glossary words"; reset_text;
+			echo "";
 			echo -e "$result"
 		fi
 	done
@@ -57,6 +58,7 @@ function verify_gloss() {
 
 		if [ "$status" == "0" ]; then
 			set_bold; set_red; echo -ne "[!] Missing glossary words"; reset_text;
+			echo "";
 			echo -e "$result"
 		fi
 	done
