@@ -49,7 +49,7 @@ verify "^<<<<<<" "Unresolved merge"
 verify "[[:digit:]]{2}/[[:digit:]]{2}/[[:digit:]]{4}" "dd/mm/AAAA wrong format date, use AAAA-mm-dd"
 verify "[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{4}" "dd-mm-AAAA wrong format date, use AAAA-mm-dd"
 
-# tullio
+# hot terms
 verify "[Ff]as[ei]" "'Fase' word to check, substitute possibly"
 verify "[Oo]bbiettiv[oi]" "Just one 'b' in word 'ob(b)iettivo'"
 verify "[Oo]bbietiv[oi]" "Just one 'b' and two 't' in word 'ob(b)iettivo'"

@@ -1,5 +1,8 @@
 accere
 affettuare
+effetture
+postcondzione
+precondzion
 inifita
 anilisi
 allìapplicazione
