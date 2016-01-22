@@ -32,7 +32,7 @@ function verify_gloss() {
 	IFS="$saveIFS"
 	for word in "${words[@]}"; do
 		word=$(echo $word)
-		result=$(grep -w --color=always -P '(?!=\\gloss\{)('"$word"')(?!\})' $files)
+		result=$(grep -w --color=always -Pi '(?!=\\gloss\{)(^'"$word"'| '$word')(?!\})' $files)
 		status="$?"
 
 		if [ "$status" -gt 1 ]; then
@@ -47,7 +47,7 @@ function verify_gloss() {
 	done
 	for word in "${lwords[@]}"; do
 		word=$(echo $word)
-		result=$(grep -w --color=always -P '(?!=\\gloss\{)('"$word"')(?!\})' $files)
+		result=$(grep -w --color=always -P '(?!=\\gloss\{)(^'"$word"'| ' $word')(?!\})' $files)
 		status="$?"
 
 		if [ "$status" -gt 1 ]; then
