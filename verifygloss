@@ -5,7 +5,8 @@
 # author: Andrea Giacomo Baldan
 # version: 1.0
 
-source /usr/bin/lib.sh
+# source /usr/bin/lib.sh
+source ~/actorbase/docker-scalatekids-latex/lib/lib.sh
 
 files=$(find . -type f -name '*.tex' -a -not -name "Glossario*")
 
@@ -32,7 +33,7 @@ function verify_gloss() {
 	IFS="$saveIFS"
 	for word in "${words[@]}"; do
 		word=$(echo $word)
-		result=$(grep -w --color=always -Pi '(?!=\\gloss\{)(^'"$word"'| '$word')(?!\})' $files)
+		result=$(grep -w --color=always -Pi '(?!=\\gloss\{)(^'"$word"'| '"$word"')(?!\})' $files)
 		status="$?"
 
 		if [ "$status" -gt 1 ]; then
@@ -48,7 +49,7 @@ function verify_gloss() {
 	done
 	for word in "${lwords[@]}"; do
 		word=$(echo $word)
-		result=$(grep -w --color=always -P '(?!=\\gloss\{)(^'"$word"'| ' $word')(?!\})' $files)
+		result=$(grep -w --color=always -P '(?!=\\gloss\{)(^'"$word"'| '"$word"')(?!\})' $files)
 		status="$?"
 
 		if [ "$status" -gt 1 ]; then
