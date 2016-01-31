@@ -32,7 +32,7 @@ RUN chmod +x /usr/bin/verify
 COPY verifygloss /usr/bin/verifygloss
 RUN chmod +x /usr/bin/verifygloss
 
-COPY readability /usr/bin/readability
+ADD readability /usr/bin/readability
 RUN chmod +x /usr/bin/readability
 
 ENV TEXMFHOME /root/texmf
