@@ -5,8 +5,7 @@
 # author: Andrea Giacomo Baldan
 # version: 1.0
 
-# source /usr/bin/lib.sh
-source ~/actorbase/docker-scalatekids-latex/lib/lib.sh
+source /usr/bin/lib.sh
 
 files=$(find . -type f -name '*.tex' -a -not -name "Glossario*")
 
