@@ -21,7 +21,7 @@ sub syllables {
     my(@words) = split(/[^a-zA-Zàèéìòù'0-9]+/, join(" ", @_));
     my @result = ();
     foreach my $word (@words) {
-        $word =~ s/($_V)($_S)/$1=iu t/gi;
+        $word =~ s/($_V)($_S)/$1=iu=t/gi;
         $word =~ s/($_V)($_Z)/$1=$2/gi;
         $word =~ s/($_X)($_V)/$1=$2/gi;
         $word =~ s/($_Y)($_V)/$1=$2/gi;
