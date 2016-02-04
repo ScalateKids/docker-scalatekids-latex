@@ -11,15 +11,24 @@ use open qw/:std :utf8/;
 
 my ($sentenceCount, $wordCount, $charCount, @pdf_files);
 
-sub syllabe {
+sub syllables {
     my $_V = "[aeiouàèéìòù]";
     my $_C = "[b-df-hj-np-tv-z]";
+    my $_S = "iut";
+    my $_X = "fi|aci";
+    my $_Y = "$_C"."e";
+    my $_Z = "i[aeo]";
     my(@words) = split(/[^a-zA-Zàèéìòù'0-9]+/, join(" ", @_));
     my @result = ();
     foreach my $word (@words) {
+        $word =~ s/($_V)($_S)/$1=iu t/gi;
+        $word =~ s/($_V)($_Z)/$1=$2/gi;
+        $word =~ s/($_X)($_V)/$1=$2/gi;
+        $word =~ s/($_Y)($_V)/$1=$2/gi;
         $word =~ s/($_V)([bcfgptv][lr])/$1=$2/gi;
         $word =~ s/($_V)([cg]h)/$1=$2/gi;
         $word =~ s/($_V)(gn)/$1=$2/gi;
+        $word =~ s/($_V)(l)/$1=$2/gi;
         $word =~ s/($_C)\1/$1=$1/gi;
         $word =~ s/(s$_C)/=$1/gi;
         1 while $word =~ s/($_V*$_C+$_V+)($_C$_V)/$1=$2/gi;
@@ -35,78 +44,78 @@ sub syllabe {
 }
 
 sub print_gulpease {
-	my $gulpease = shift;
-	my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
-	if ($^O eq 'darwin') {
-		($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
-	}
-	if ($gulpease < 45) {
-		printf " $bold - Gulpease:$reset\t  $red%.2f$reset\n", $gulpease;
-	} elsif($gulpease > 45 && $gulpease < 60) {
-		printf " $bold - Gulpease:$reset\t  $yellow%.2f$reset\n", $gulpease;
-	} else {
-		printf " $bold - Gulpease:$reset\t  $green%.2f$reset\n", $gulpease;
-	}
+    my $gulpease = shift;
+    my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
+    if ($^O eq 'darwin') {
+        ($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
+    }
+    if ($gulpease < 45) {
+        printf " $bold - Gulpease:$reset\t  $red%.2f$reset\n", $gulpease;
+    } elsif($gulpease > 45 && $gulpease < 60) {
+        printf " $bold - Gulpease:$reset\t  $yellow%.2f$reset\n", $gulpease;
+    } else {
+        printf " $bold - Gulpease:$reset\t  $green%.2f$reset\n", $gulpease;
+    }
 }
 
 sub print_flesch {
-	my $flesch = shift;
-	my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
-	if ($^O eq 'darwin') {
-		($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
-	}
-	if ($flesch < 30) {
-		printf " $bold - Flesch:$reset\t  $red%.2f$reset\n", $flesch;
-	} elsif($flesch > 30 && $flesch < 70) {
-		printf " $bold - Flesch:$reset\t  $yellow%.2f$reset\n", $flesch;
-	} else {
-		printf " $bold - Flesch:$reset\t  $green%.2f$reset\n", $flesch;
-	}
+    my $flesch = shift;
+    my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
+    if ($^O eq 'darwin') {
+        ($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
+    }
+    if ($flesch < 30) {
+        printf " $bold - Flesch:$reset\t  $red%.2f$reset\n", $flesch;
+    } elsif($flesch > 30 && $flesch < 70) {
+        printf " $bold - Flesch:$reset\t  $yellow%.2f$reset\n", $flesch;
+    } else {
+        printf " $bold - Flesch:$reset\t  $green%.2f$reset\n", $flesch;
+    }
 }
 
 sub print_flesch_kincaid {
-	my $fleschKincaid = shift;
-	my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
-	if ($^O eq 'darwin') {
-		($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
-	}
-	if ($fleschKincaid < 8) {
-		printf " $bold - FKincaid:$reset\t  $green%.2f$reset\n", $fleschKincaid;
-	} elsif($fleschKincaid > 8 && $fleschKincaid < 12) {
-		printf " $bold - FKincaid:$reset\t  $yellow%.2f$reset\n", $fleschKincaid;
-	} else {
-		printf " $bold - FKincaid:$reset\t  $green%.2f$reset\n", $fleschKincaid;
-	}
+    my $fleschKincaid = shift;
+    my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
+    if ($^O eq 'darwin') {
+        ($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
+    }
+    if ($fleschKincaid < 8) {
+        printf " $bold - FKincaid:$reset\t  $green%.2f$reset\n", $fleschKincaid;
+    } elsif($fleschKincaid > 8 && $fleschKincaid < 12) {
+        printf " $bold - FKincaid:$reset\t  $yellow%.2f$reset\n", $fleschKincaid;
+    } else {
+        printf " $bold - FKincaid:$reset\t  $green%.2f$reset\n", $fleschKincaid;
+    }
 }
 
 sub print_ari {
-	my $ari = shift;
-	my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
-	if ($^O eq 'darwin') {
-		($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
-	}
-	if ($ari < 8) {
-		printf " $bold - Ari:$reset\t  $green%.2f$reset\n", $ari;
-	} elsif($ari > 8 && $ari < 12) {
-		printf " $bold - Ari:$reset\t  $yellow%.2f$reset\n", $ari;
-	} else {
-		printf " $bold - Ari:$reset\t  $red%.2f$reset\n", $ari;
-	}
+    my $ari = shift;
+    my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
+    if ($^O eq 'darwin') {
+        ($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
+    }
+    if ($ari < 8) {
+        printf " $bold - Ari:$reset\t  $green%.2f$reset\n", $ari;
+    } elsif($ari > 8 && $ari < 12) {
+        printf " $bold - Ari:$reset\t  $yellow%.2f$reset\n", $ari;
+    } else {
+        printf " $bold - Ari:$reset\t  $red%.2f$reset\n", $ari;
+    }
 }
 
 sub print_coleman_liau {
-	my $colemanLiau = shift;
-	my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
-	if ($^O eq 'darwin') {
-		($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
-	}
-	if ($colemanLiau < 8) {
-		printf " $bold - Coleman-Liau:$reset $green%.2f$reset\n", $colemanLiau;
-	} elsif($colemanLiau > 8 && $colemanLiau < 12) {
-		printf " $bold - Coleman-Liau:$reset $yellow%.2f$reset\n", $colemanLiau;
-	} else {
-		printf " $bold - Coleman-Liau:$reset $red%.2f$reset\n", $colemanLiau;
-	}
+    my $colemanLiau = shift;
+    my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
+    if ($^O eq 'darwin') {
+        ($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
+    }
+    if ($colemanLiau < 8) {
+        printf " $bold - Coleman-Liau:$reset $green%.2f$reset\n", $colemanLiau;
+    } elsif($colemanLiau > 8 && $colemanLiau < 12) {
+        printf " $bold - Coleman-Liau:$reset $yellow%.2f$reset\n", $colemanLiau;
+    } else {
+        printf " $bold - Coleman-Liau:$reset $red%.2f$reset\n", $colemanLiau;
+    }
 }
 
 if(@ARGV == 0) {
@@ -129,7 +138,7 @@ foreach my $pdf(@pdf_files) {
     ++$sentenceCount while $text =~ /["']?[A-Z][^.?!]+((?![.?!]['"]?\s["']?[A-Z][^.?!]).)+[.?!'"]+/g;
     $text =~ s/[^\w\dèòàù\(\)\[\]\{\}]/ /g;
     ++$wordCount while $text =~ /\S+/g;
-    my $syllabes = scalar syllabe($text);
+    my $syllabes = scalar syllables($text);
     $text =~ s/[[:punct:]][[:space:]]//g;
     ++$charCount while $text =~ /[a-zA-Z0-9_àòèù\(\)\[\]\{\}]/g;
 
@@ -139,7 +148,7 @@ foreach my $pdf(@pdf_files) {
 
     ##### FLESCH #####
 
-    my $flesch = 206.835 - 1.015 * ($wordCount / $sentenceCount) - 84.6 * ($syllabes / $wordCount);
+    my $flesch = 206.835 - 84.6 * ($syllabes / $wordCount) - 1.015 * ($wordCount / $sentenceCount);
 
     ##### FLESCH-KINCAID #####
 
@@ -156,23 +165,23 @@ foreach my $pdf(@pdf_files) {
     my $colemanLiau = (0.0588 * $L) - (0.296 * $S) - 15.8;
 
     print "\n";
-	if($^O eq 'darwin') {
-		print "\033[1m$pdf:\033[0m\n\n";
+    if($^O eq 'darwin') {
+        print "\033[1m$pdf:\033[0m\n\n";
         print "\033[1m[*] STATS\033[0m\n\n";
-		print "\033[1m  - Sentences:\033[0m\t\033[94m$sentenceCount\033[0m\t\033[1m  - Words:\033[94m\t\033[94m$wordCount\033[0m\n";
-		print "\033[1m  - Characters:\033[0m\t\033[94m$charCount\033[0m\t\033[1m  - Syllabes:\033[0m\t\033[94m$syllabes\033[0m\n";
+        print "\033[1m  - Sentences:\033[0m\t\033[94m$sentenceCount\033[0m\t\033[1m  - Words:\033[94m\t\033[94m$wordCount\033[0m\n";
+        print "\033[1m  - Characters:\033[0m\t\033[94m$charCount\033[0m\t\033[1m  - Syllabes:\033[0m\t\033[94m$syllabes\033[0m\n";
         print "\n";
         print "\033[1m[*] READABILITY REPORT\033[0m\n";
-	} else {
-		print "\e[1m$pdf:\e[0m\n\n";
+    } else {
+        print "\e[1m$pdf:\e[0m\n\n";
         print "\e[1m[*] STATS\033[0m\n\n";
-		print "\e[1m  - Sentences:\e[0m\t\e[94m$sentenceCount\e[0m\t\e[1m  - Words:\e[0m\t\e[94m$wordCount\e[0m\n";
-		print "\e[1m  - Characters:\e[0m\t\e[94m$charCount\e[0m\t\e[1m  - Syllabes:\e[0m\t\e[94m$syllabes\e[0m\n";
+        print "\e[1m  - Sentences:\e[0m\t\e[94m$sentenceCount\e[0m\t\e[1m  - Words:\e[0m\t\e[94m$wordCount\e[0m\n";
+        print "\e[1m  - Characters:\e[0m\t\e[94m$charCount\e[0m\t\e[1m  - Syllabes:\e[0m\t\e[94m$syllabes\e[0m\n";
         print "\n";
         print "\e[1m[*] READABILITY REPORT\e[0m\n";
-	}
+    }
     print "\n";
-	print_gulpease($gulpease);
+    print_gulpease($gulpease);
     print_flesch($flesch);
     print_flesch_kincaid($fleschKincaid);
     print_ari($ari);
