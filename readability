@@ -148,7 +148,7 @@ foreach my $pdf(@pdf_files) {
 
     ##### FLESCH #####
 
-    my $flesch = 206.835 - 84.6 * ($syllabes / $wordCount) - 1.015 * ($wordCount / $sentenceCount);
+    my $flesch = 206.0 - 65.0 * ($syllabes / $wordCount) - ($wordCount / $sentenceCount);
 
     ##### FLESCH-KINCAID #####
 
