@@ -96,7 +96,7 @@ foreach my $pdf(@pdf_files) {
     $sentenceCount = 0;
     $wordCount = 0;
     $charCount = 0;
-    ++$sentenceCount while $text =~ /["']?[A-Z][^.?!]+((?![.?!]['"]?\s["']?[A-Z][^.?!]).)+[.?!'"]+/g;
+    ++$sentenceCount while $text =~ /["']?[A-Z][^.:;?!]+((?![.:;?!]['"]?\s["']?[A-Z][^.:;?!]).)+[.:;?!'"]+/g;
     $text =~ s/[^\w\dèòàù\(\)\[\]\{\}]/ /g;
     ++$wordCount while $text =~ /\S+/g;
     my $syllabes = scalar syllables($text);
