@@ -1,7 +1,7 @@
 FROM ubuntu:trusty
 MAINTAINER Scalatekids <scalatekids@gmail.com>
 
-RUN [ "apt-add-repository ppa:brightbox/ruby-ng" ]
+RUN [ "apt-add-repository", " ppa:brightbox/ruby-ng" ]
 RUN [ "apt-get", "update" ]
 RUN [ "apt-get", "install", "-qy", "--force-yes", \
 	  "texlive", \
