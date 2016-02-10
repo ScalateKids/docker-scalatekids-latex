@@ -14,9 +14,9 @@ my ($sentenceCount, $wordCount, $charCount, @pdf_files);
 sub syllables {
     my $_V = "[aeiouàèéìòù]";
     my $_C = "[b-df-hj-np-tv-z]";
+    my $_Y = "[b-df-hj-mp-tv-z]";
     my $_S = "iut";
     my $_X = "fi|aci";
-    my $_Y = "$_C"."e";
     my $_Z = "i[aeo]";
     my(@words) = split(/[^a-zA-Zàèéìòù'0-9]+/, join(" ", @_));
     my @result = ();
@@ -24,11 +24,10 @@ sub syllables {
         $word =~ s/($_V)($_S)/$1=iu=t/gi;
         $word =~ s/($_V)($_Z)/$1=$2/gi;
         $word =~ s/($_X)($_V)/$1=$2/gi;
-        $word =~ s/($_Y)($_V)/$1=$2/gi;
+        $word =~ s/($_C)($_V)($_V)($_Y)/$1$2=$3=$4/gi;
         $word =~ s/($_V)([bcfgptv][lr])/$1=$2/gi;
         $word =~ s/($_V)([cg]h)/$1=$2/gi;
         $word =~ s/($_V)(gn)/$1=$2/gi;
-        $word =~ s/($_V)(l)/$1=$2/gi;
         $word =~ s/($_C)\1/$1=$1/gi;
         $word =~ s/(s$_C)/=$1/gi;
         1 while $word =~ s/($_V*$_C+$_V+)($_C$_V)/$1=$2/gi;
@@ -38,6 +37,13 @@ sub syllables {
         $word =~ s/^=//;
         $word =~ s/=$//;
         $word =~ s/=+/=/g;
+        # special cases
+        $word =~ s/(le)([oa]n)/$1=$2/gi;
+        $word =~ s/(le)([oa])(an)/$1=$2=$3/gi;
+        $word =~ s/(spe)=(le)=(o)/$1=$2$3/gi;
+        $word =~ s/([gd]i)=($_V)/$1$2/gi;
+        $word =~ s/(ni)=($_V)/$1$2/gi;
+        $word =~ s/=(e)=(l)/$1$2/gi;
         push(@result, split(/=/, $word));
     }
     return @result;
@@ -73,51 +79,6 @@ sub print_flesch {
     }
 }
 
-sub print_flesch_kincaid {
-    my $fleschKincaid = shift;
-    my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
-    if ($^O eq 'darwin') {
-        ($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
-    }
-    if ($fleschKincaid < 8) {
-        printf " $bold - FKincaid:$reset\t  $green%.2f$reset\n", $fleschKincaid;
-    } elsif($fleschKincaid > 8 && $fleschKincaid < 12) {
-        printf " $bold - FKincaid:$reset\t  $yellow%.2f$reset\n", $fleschKincaid;
-    } else {
-        printf " $bold - FKincaid:$reset\t  $green%.2f$reset\n", $fleschKincaid;
-    }
-}
-
-sub print_ari {
-    my $ari = shift;
-    my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
-    if ($^O eq 'darwin') {
-        ($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
-    }
-    if ($ari < 8) {
-        printf " $bold - Ari:$reset\t  $green%.2f$reset\n", $ari;
-    } elsif($ari > 8 && $ari < 12) {
-        printf " $bold - Ari:$reset\t  $yellow%.2f$reset\n", $ari;
-    } else {
-        printf " $bold - Ari:$reset\t  $red%.2f$reset\n", $ari;
-    }
-}
-
-sub print_coleman_liau {
-    my $colemanLiau = shift;
-    my ($bold, $red, $green, $yellow, $reset) = ("\e[1m", "\e[31m", "\e[32m", "\e[33m", "\e[0m");
-    if ($^O eq 'darwin') {
-        ($bold, $red, $green, $yellow, $reset) = ("\033[1m", "\033[31m", "\033[32m", "\033[33m", "\033[0m");
-    }
-    if ($colemanLiau < 8) {
-        printf " $bold - Coleman-Liau:$reset $green%.2f$reset\n", $colemanLiau;
-    } elsif($colemanLiau > 8 && $colemanLiau < 12) {
-        printf " $bold - Coleman-Liau:$reset $yellow%.2f$reset\n", $colemanLiau;
-    } else {
-        printf " $bold - Coleman-Liau:$reset $red%.2f$reset\n", $colemanLiau;
-    }
-}
-
 if(@ARGV == 0) {
     # find all project files .pdf
     @pdf_files = `find . -type f -name "*.pdf"`;
@@ -150,20 +111,6 @@ foreach my $pdf(@pdf_files) {
 
     my $flesch = 206.0 - 65.0 * ($syllabes / $wordCount) - ($wordCount / $sentenceCount);
 
-    ##### FLESCH-KINCAID #####
-
-    my $fleschKincaid = 0.39 * ($wordCount / $sentenceCount) + 11.8 * ($syllabes / $wordCount) - 15.59;
-
-    ##### Automated Readability Index #####
-
-    my $ari = 4.71 * ($charCount / $wordCount) + 0.5 * ($wordCount / $sentenceCount) - 21.43;
-
-    ##### Coleman-Liau #####
-
-    my $L = ($charCount * 100) / $wordCount;
-    my $S = ($sentenceCount * 100) / $wordCount;
-    my $colemanLiau = (0.0588 * $L) - (0.296 * $S) - 15.8;
-
     print "\n";
     if($^O eq 'darwin') {
         print "\033[1m$pdf:\033[0m\n\n";
@@ -183,8 +130,5 @@ foreach my $pdf(@pdf_files) {
     print "\n";
     print_gulpease($gulpease);
     print_flesch($flesch);
-    print_flesch_kincaid($fleschKincaid);
-    print_ari($ari);
-    print_coleman_liau($colemanLiau);
 }
 print "\n";

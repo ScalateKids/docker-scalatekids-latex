@@ -1,5 +1,5 @@
 FROM ubuntu:trusty
-FROM ruby:latest
+
 MAINTAINER Scalatekids <scalatekids@gmail.com>
 
 RUN [ "apt-get", "update" ]
@@ -10,8 +10,6 @@ RUN [ "apt-get", "install", "-qy", "--force-yes", \
 	  "poppler-utils" ]
 
 RUN [ "apt-get", "clean" ]
-
-RUN gem install lingua-it-readability
 
 COPY lib/lib.sh /usr/bin/lib.sh
 
@@ -38,9 +36,6 @@ RUN chmod +x /usr/bin/verifygloss
 
 ADD readability /usr/bin/readability
 RUN chmod +x /usr/bin/readability
-
-ADD readaruby /usr/bin/readaruby
-RUN chmod +x /usr/bin/readaruby
 
 ENV TEXMFHOME /root/texmf
 ADD local /root/texmf/tex/latex
