@@ -11,6 +11,8 @@ RUN [ "apt-get", "install", "-qy", "--force-yes", \
 
 RUN [ "apt-get", "clean" ]
 
+RUN gem install lingua-it-readability
+
 COPY lib/lib.sh /usr/bin/lib.sh
 
 RUN mkdir /root/input
