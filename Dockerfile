@@ -1,4 +1,5 @@
 FROM ubuntu:trusty
+FROM ruby:latest
 MAINTAINER Scalatekids <scalatekids@gmail.com>
 
 RUN [ "apt-get", "update" ]
@@ -6,9 +7,7 @@ RUN [ "apt-get", "install", "-qy", "--force-yes", \
 	  "texlive", \
 	  "texlive-latex-extra", \
 	  "texlive-fonts-extra", \
-	  "poppler-utils", \
-      "ruby", \
-      "ruby-dev" ]
+	  "poppler-utils" ]
 
 RUN [ "apt-get", "clean" ]
 
