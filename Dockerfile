@@ -1,15 +1,14 @@
 FROM ubuntu:trusty
 MAINTAINER Scalatekids <scalatekids@gmail.com>
 
-RUN [ "apt-add-repository", " ppa:brightbox/ruby-ng" ]
 RUN [ "apt-get", "update" ]
 RUN [ "apt-get", "install", "-qy", "--force-yes", \
 	  "texlive", \
 	  "texlive-latex-extra", \
 	  "texlive-fonts-extra", \
 	  "poppler-utils", \
-      "ruby2.3", \
-      "ruby2.3-dev" ]
+      "ruby", \
+      "ruby-dev" ]
 
 RUN [ "apt-get", "clean" ]
 
