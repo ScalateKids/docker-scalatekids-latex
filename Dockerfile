@@ -6,7 +6,9 @@ RUN [ "apt-get", "install", "-qy", "--force-yes", \
 	  "texlive", \
 	  "texlive-latex-extra", \
 	  "texlive-fonts-extra", \
-	  "poppler-utils" ]
+	  "poppler-utils", \
+      "ruby" ]
+
 RUN [ "apt-get", "clean" ]
 
 COPY lib/lib.sh /usr/bin/lib.sh
@@ -34,6 +36,9 @@ RUN chmod +x /usr/bin/verifygloss
 
 ADD readability /usr/bin/readability
 RUN chmod +x /usr/bin/readability
+
+ADD readaruby /usr/bin/readaruby
+RUN chmod +x /usr/bin/readaruby
 
 ENV TEXMFHOME /root/texmf
 ADD local /root/texmf/tex/latex

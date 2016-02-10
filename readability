@@ -140,7 +140,7 @@ foreach my $pdf(@pdf_files) {
     ++$wordCount while $text =~ /\S+/g;
     my $syllabes = scalar syllables($text);
     $text =~ s/[[:punct:]][[:space:]]//g;
-    ++$charCount while $text =~ /[a-zA-Z0-9_àòèù\(\)\[\]\{\}]/g;
+    ++$charCount while $text =~ /[a-zA-Z0-9_àòèéùì\(\)\[\]\{\}]/g;
 
     ##### GULPEASE #####
 
