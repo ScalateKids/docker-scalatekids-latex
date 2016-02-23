@@ -6,14 +6,14 @@
 # version: 1.0
 
 source /usr/bin/lib.sh
-
+DIR=RP
 files=$(find . -type f -name '*.tex' -a -not -name "Glossario*")
 
 saveIFS="$IFS"
 
 function verify() {
 	IFS=":"
-	gloss_file=$(find . -type f -name 'Glossario*.tex')
+	gloss_file=$(find $DIR -type f -name 'Glossario*.tex')
 	glossary=($(grep "\\\\glossDef{[^}]*}" -osh $gloss_file | sed 's/.glossDef{\([^}]*\)}/\1:/g' | sort | uniq))
 	all=($(grep "\\\\glossDef{[^}]*}" -osh $gloss_file | sed 's/.glossDef{\([^}]*\)}/\1:/g' | sort | uniq | awk -F'[()]' '{print $2}' | sort | uniq))
 	al=($(grep "\\\\glossDef{[^}]*}" -osh $gloss_file | sed 's/.glossDef{\([^}]*\)}/\1:/g' | sort | uniq | awk -F'[()]' '{print $1}' | sort | uniq))

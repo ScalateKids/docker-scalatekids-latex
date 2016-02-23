@@ -10,6 +10,7 @@ use strict;
 use open qw/:std :utf8/;
 
 my ($sentenceCount, $wordCount, $charCount, @pdf_files);
+my $DIR = 'RP';
 
 sub syllables {
     my $_V = "[aeiouàèéìòù]";
@@ -81,7 +82,7 @@ sub print_flesch {
 
 if(@ARGV == 0) {
     # find all project files .pdf
-    @pdf_files = `find . -type f -name "*.pdf"`;
+    @pdf_files = `find $DIR -type f -name "*.pdf"`;
 } else {
     (@pdf_files) = @ARGV;
     # .pdf extension check on arguments
