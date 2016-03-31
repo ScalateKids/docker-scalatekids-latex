@@ -7,6 +7,7 @@ RUN [ "apt-get", "install", "-qy", "--force-yes", \
 	  "texlive", \
 	  "texlive-latex-extra", \
 	  "texlive-fonts-extra", \
+      "texlive-lang-italian", \
 	  "poppler-utils" ]
 
 RUN [ "apt-get", "clean" ]
